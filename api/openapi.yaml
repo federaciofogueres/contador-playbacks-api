@@ -1,0 +1,54 @@
+openapi: 3.0.0
+info:
+  title: Contador Playbacks API
+  description: API para la app contador-playbacks
+  contact:
+    email: transformaciondigital@hogueras.es
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/federaciodefogueres/contador-playbacks-api/1.0.0
+  description: SwaggerHub API Auto Mocking
+tags:
+- name: settings
+  description: Settings available to manage the app
+paths:
+  /mail:
+    post:
+      tags:
+      - settings
+      summary: send an email
+      description: Sends an email from the system
+      operationId: sendEmail
+      requestBody:
+        description: Data to send
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailItem'
+      responses:
+        "201":
+          description: email sent
+        "400":
+          description: invalid data
+      x-swagger-router-controller: Settings
+components:
+  schemas:
+    EmailItem:
+      required:
+      - content
+      - destine
+      - subject
+      type: object
+      properties:
+        subject:
+          type: string
+          example: Testing email
+        content:
+          type: string
+          example: Content testing email
+        destine:
+          type: string
+          example: testing@mail.com
