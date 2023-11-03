@@ -4,8 +4,8 @@
   "description": "API para la app contador-playbacks",
   "main": "index.js",
   "scripts": {
-	"prestart": "npm install",
-	"start": "node index.js"
+    "prestart": "npm install",
+    "start": "node index.js"
   },
   "keywords": [
     "swagger"
@@ -15,6 +15,7 @@
   "dependencies": {
     "connect": "^3.2.0",
     "js-yaml": "^3.3.0",
+    "nodemailer": "^6.9.7",
     "oas3-tools": "^2.2.3"
   }
 }

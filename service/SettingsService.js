@@ -1,4 +1,5 @@
 'use strict';
+var mailer = require("../utils/mailer");
 
 
 /**
@@ -10,18 +11,22 @@
  **/
 exports.sendEmail = function(body) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "status" : {
-    "message" : "Example message",
-    "status" : "200"
-  }
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+    var form = {}
+    form = {
+      from: 'Federació de Les Fogueres de Sant Joan',
+      email: body.destine,
+      asunto: body.subject,
+      contenido: body.content
+    } 
+
+    mailer(form);
+    form = {};
+
+    var response = {};
+    response['application/json'] = {
+      status: 200,
+      message: "OK"
+    };
+    resolve(response);  
   });
 }
-
