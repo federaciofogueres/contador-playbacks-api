@@ -11,6 +11,7 @@ var mailer = require("../utils/mailer");
  **/
 exports.sendEmail = function(body) {
   return new Promise(function(resolve, reject) {
+    /*
     var form = {}
     form = {
       from: 'Federació de Les Fogueres de Sant Joan',
@@ -20,7 +21,7 @@ exports.sendEmail = function(body) {
     } 
 
     mailer(form);
-    form = {};
+    form = {};*/
 
     var response = {};
     response['application/json'] = {
