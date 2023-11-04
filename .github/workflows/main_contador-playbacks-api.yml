@@ -58,5 +58,5 @@ jobs:
         with:
           app-name: 'contador-playbacks-api'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_904C09826F1E4870854B565D35BEA0E0 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_ABA781AEB9EA41D3ACA378B48B55E24D }}
           package: .
