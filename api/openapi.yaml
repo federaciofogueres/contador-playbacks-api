@@ -62,6 +62,7 @@ components:
       - content
       - dataSesion
       - destine
+      - sign
       - subject
       type: object
       properties:
@@ -77,6 +78,9 @@ components:
         dataSesion:
           type: string
           example: Primera sesión - Doctor Bergez
+        sign:
+          type: string
+          example: image.png
     inline_response_200:
       type: object
       properties:
