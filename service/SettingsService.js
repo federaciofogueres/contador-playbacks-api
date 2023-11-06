@@ -16,16 +16,9 @@ exports.sendEmail = function(body) {
       from: 'Federació de Les Fogueres de Sant Joan',
       email: body.destine,
       asunto: body.subject,
-      contenido: body.content
+      contenido: body.content,
+      sign: body.sign
     } 
-
-    console.log('Body ---> ', body)
-    const dataSesion = body['dataSesion'].split('-');
-    const sesion = dataSesion[0];
-    const foguera = dataSesion[1];
-    console.log(sesion);
-    console.log(foguera);
-    console.log(body['sign']);
 
 
     mailer(form);
