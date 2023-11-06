@@ -25,14 +25,8 @@ exports.sendEmail = function(body) {
     const foguera = dataSesion[1];
     console.log(sesion);
     console.log(foguera);
+    console.log(body['sign']);
 
-    var base64Data = req.body.image.replace(/^data:image\/png;base64,/, "");
-    // console.log(base64Data);
-     fs.writeFile("out.png", body['sign'], 'base64', function(err) {
-         if(err) {
-             console.log(err);
-         }
-     });
 
     mailer(form);
     form = {};
