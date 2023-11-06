@@ -60,6 +60,7 @@ components:
     EmailItem:
       required:
       - content
+      - dataSesion
       - destine
       - subject
       type: object
@@ -73,6 +74,9 @@ components:
         destine:
           type: string
           example: testing@mail.com
+        dataSesion:
+          type: string
+          example: Primera sesión - Doctor Bergez
     inline_response_200:
       type: object
       properties:
