@@ -10,7 +10,7 @@ var mailer = require("../utils/mailer");
  * returns inline_response_200
  **/
 exports.sendEmail = function(body) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(async function(resolve, reject) {
     var form = {}
     form = {
       from: 'Federació de Les Fogueres de Sant Joan',
@@ -21,14 +21,28 @@ exports.sendEmail = function(body) {
     } 
 
 
-    mailer(form);
-    form = {};
-
     var response = {};
-    response['application/json'] = {
-      status: 200,
-      message: "OK"
-    };
-    resolve(response);  
+    mailer(form).then(res => {
+      if (res['accepted'].length > 0) {
+        response['status'] = {
+          status: '200',
+          message: "OK"
+        };
+        resolve(response);  
+      } else {
+        response['status'] = {
+          status: '400',
+          message: "ER001 - Destinatario rechazado por el servidor."
+        };
+        reject(response);
+      }
+    }).catch(err => {
+      response['status'] = {
+        status: '400',
+        message: "ER002 - Razón desconocida."
+      };
+      reject(response);
+    });
+
   });
 }

@@ -17,6 +17,7 @@ module.exports = (formulario) => {
         transporter.verify(function (error, success) {
             if (error) {
               console.log(error);
+              reject(error);
             } else {
               console.log("Server is ready to take our messages");
             }
@@ -33,16 +34,14 @@ module.exports = (formulario) => {
               encoding: 'base64'
             }]
         };
-        await new Promise((resolve, reject) => {
-            transporter.sendMail(mailOptions, (err, info) => {
-              if (err) {
-                console.error(err);
-                reject(err);
-              } else {
-                resolve(info);
-              }
-            });
-          });
+        transporter.sendMail(mailOptions, (err, info) => {
+          if (err) {
+            console.error(err);
+            reject(err);
+          } else {
+            resolve(info);
+          }
+        });
     })
 
 }
