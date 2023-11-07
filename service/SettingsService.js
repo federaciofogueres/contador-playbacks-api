@@ -13,7 +13,7 @@ exports.sendEmail = function(body) {
   return new Promise(async function(resolve, reject) {
     var form = {}
     form = {
-      from: 'Federació de Les Fogueres de Sant Joan',
+      from: 'Federació de Les Fogueres de Sant Joan <tdigitalffsj@gmail.com>',
       email: body.destine,
       asunto: body.subject,
       contenido: body.content,
