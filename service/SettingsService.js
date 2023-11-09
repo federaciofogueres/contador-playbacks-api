@@ -25,20 +25,20 @@ exports.sendEmail = function(body) {
     mailer(form).then(res => {
       if (res['accepted'].length > 0) {
         response['status'] = {
-          status: '200',
+          code: '200',
           message: "OK"
         };
         resolve(response);  
       } else {
         response['status'] = {
-          status: '400',
+          code: '400',
           message: "ER001 - Destinatario rechazado por el servidor."
         };
         reject(response);
       }
     }).catch(err => {
       response['status'] = {
-        status: '400',
+        code: '400',
         message: "ER002 - Razón desconocida."
       };
       reject(response);
