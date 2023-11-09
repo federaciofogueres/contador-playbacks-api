@@ -51,12 +51,8 @@ var get = exports.get = async function(codigo, table, sqlExpression = null) {
                 sql = sqlExpression;
             }
             if (!sql.includes('null')) {
-                if (codigo !== null && table === 'voto') {
-                    sql += ` WHERE idSimulacion = ${codigo};`
-                } else if (codigo !== null && table === 'SimulacionCandidatura') {
-                    sql += ` WHERE idSimulacion = ${codigo};`
-                } else if(codigo !== null && table === 'usuarios') {
-                    sql += ` WHERE dni like '${codigo}';`
+                if (codigo !== null && table === 'asociacion_session') {
+                    sql += ` WHERE id_session = ${codigo};`
                 } else if (codigo !== null) {
                     sql += ` WHERE id = ${codigo};`
                 }

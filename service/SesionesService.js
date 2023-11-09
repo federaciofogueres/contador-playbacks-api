@@ -16,3 +16,26 @@ exports.getAllSessions = function() {
     })
   });
 }
+
+
+/**
+ * Devuelve la información de la sesión solicitada.
+ *
+ * idSession String 
+ * returns SessionResponse
+ **/
+exports.getSession = function(idSession) {
+  return new Promise(async function (resolve, reject){
+    try {
+      let session = await extraService.get(idSession, 'session');
+      let asociaciones = await extraService.get(idSession, 'asociacion_session');
+      let type = await extraService.get(session[0].type, 'type_session');
+      let response = session;
+      response[0]['type_normalized'] = type[0].type_normalized;
+      response[0]['participants'] = asociaciones;
+      resolve(extraService.transformResponse(response, 'session'));
+    } catch(error) {
+      reject(extraService.transformResponse(error, null, false));
+    }
+  })
+}

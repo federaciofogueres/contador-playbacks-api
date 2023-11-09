@@ -33,6 +33,28 @@ paths:
               schema:
                 $ref: '#/components/schemas/SessionsResponse'
       x-swagger-router-controller: Sesiones
+  /sesiones/{idSession}:
+    get:
+      tags:
+      - Sesiones
+      description: Devuelve la información de la sesión solicitada.
+      operationId: getSession
+      parameters:
+      - name: idSession
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionResponse'
+      x-swagger-router-controller: Sesiones
   /asociaciones:
     get:
       tags:
@@ -132,6 +154,29 @@ components:
             title: Asociación inventada 1
             email: asociacion@gmail.com
         - session_title: Sesión del día X
+          type_normalized: Eliminatoria
+          id: 12345678A
+          type: 0
+          participants:
+          - id: 12345678A
+            title: Asociación inventada 1
+            email: asociacion@gmail.com
+          - id: 12345678A
+            title: Asociación inventada 1
+            email: asociacion@gmail.com
+        status:
+          message: Example message
+          status: "200"
+    SessionResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/Response200'
+        session:
+          $ref: '#/components/schemas/Session'
+      example:
+        session:
+          session_title: Sesión del día X
           type_normalized: Eliminatoria
           id: 12345678A
           type: 0
