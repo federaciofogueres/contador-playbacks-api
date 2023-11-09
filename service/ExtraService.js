@@ -73,3 +73,43 @@ var get = exports.get = async function(codigo, table, sqlExpression = null) {
         }
     });
 }
+
+var processSQLPostRequest = async function(insertObject) {
+    var fields = ' (';
+    var values = ` VALUES (`;
+    await Object.keys(insertObject).forEach(key => {
+        fields += `${key},`;
+        values += `'${insertObject[key]}',`;
+    })
+    fields = fields.slice(0,-1);
+    values = values.slice(0,-1);
+    fields += ')';
+    values += `);`;
+    return fields + values;
+}
+
+var set = exports.set = async function(insertObject, table, returnId = false) {
+    return new Promise(async function (resolve, reject) {
+        var connection = connectionBD.connect();
+        if (connection) {
+            var sql = `INSERT INTO ${connectionBD.DB}.${table}` + await processSQLPostRequest(insertObject);
+            console.log('SQL SET: ', sql);
+            connection.query(sql, async function (err, rows, fields) {
+                if (err) reject('Error al crear el registro: ' + err);
+                if (rows) {
+                  connectionBD.closeConnect(connection);
+                  if (returnId) {
+                    resolve(rows.insertId)
+                  } else {
+                    resolve(rows.affectedRows);
+                  }
+                } else {
+                    connectionBD.closeConnect(connection);
+                    reject('Error al crear el registro.');
+                }
+            });
+        } else {
+            reject('Error al abrir conexión con la BD.');
+        }
+    })
+}
