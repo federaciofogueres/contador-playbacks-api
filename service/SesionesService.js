@@ -51,18 +51,24 @@ exports.getSession = function(idSession) {
  * returns inline_response_200
  **/
 exports.createSesion = function(body) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "status" : {
-    "code" : "200",
-    "message" : "Example message"
-  }
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
+  return new Promise(async function (resolve, reject){
+    let postSession = {
+      id: body.id,
+      session_title: body.session_title,
+      type: body.type
     }
-  });
+    try {
+      await extraService.set(postSession, 'session'); // Returns 1 if OK
+      for(let asociacion of body.participants) {
+        let postRelation =  {
+          id_asociacion: asociacion.id,
+          id_session: body.id
+        }
+        await extraService.set(postRelation, 'asociacion_session'); // Returns 1 if OK
+      }
+      resolve(extraService.transformResponse(null, null, true));
+    } catch(error) {
+      reject(extraService.transformResponse(error, null, false));
+    }
+  })
 }
