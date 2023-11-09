@@ -54,7 +54,7 @@ var get = exports.get = async function(codigo, table, sqlExpression = null) {
                 if (codigo !== null && table === 'asociacion_session') {
                     sql += ` WHERE id_session = ${codigo};`
                 } else if (codigo !== null) {
-                    sql += ` WHERE id = ${codigo};`
+                    sql += ` WHERE id = '${codigo}';`
                 }
                 console.log('GET SQL ---> ', sql);
                 connection.query(sql, async function (err, rows, fields) {
