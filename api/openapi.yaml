@@ -15,9 +15,11 @@ tags:
 - name: Settings
   description: Settings available to manage the app
 - name: Sesiones
-  description: Settings available to manage the app
+  description: Sessions
 - name: Asociaciones
-  description: Settings available to manage the app
+  description: Asociaciones
+- name: TypeSesion
+  description: Tipos de sesión
 paths:
   /sesiones:
     get:
@@ -32,6 +34,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SessionsResponse'
+      x-swagger-router-controller: Sesiones
+    post:
+      tags:
+      - Sesiones
+      description: Crea una sesión
+      operationId: createSesion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Session'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
       x-swagger-router-controller: Sesiones
   /sesiones/{idSession}:
     get:
@@ -69,6 +89,38 @@ paths:
               schema:
                 $ref: '#/components/schemas/AsociacionesResponse'
       x-swagger-router-controller: Asociaciones
+    post:
+      tags:
+      - Asociaciones
+      description: Crea una asociación
+      operationId: createAsociacion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Asociacion'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+      x-swagger-router-controller: Asociaciones
+  /typeSesion:
+    get:
+      tags:
+      - TypeSesion
+      description: Devuelve todas las sesiones con su información.
+      operationId: getAllTypeSesion
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TypeSessionResponse'
+      x-swagger-router-controller: TypeSesion
   /mail:
     post:
       tags:
@@ -77,7 +129,6 @@ paths:
       description: Sends an email from the system
       operationId: sendEmail
       requestBody:
-        description: Data to send
         content:
           application/json:
             schema:
@@ -102,15 +153,15 @@ components:
       - status
       type: object
       properties:
-        status:
+        code:
           type: string
           example: "200"
         message:
           type: string
           example: Example message
       example:
+        code: "200"
         message: Example message
-        status: "200"
     AsociacionesResponse:
       type: object
       properties:
@@ -122,8 +173,8 @@ components:
             $ref: '#/components/schemas/Asociacion'
       example:
         status:
+          code: "200"
           message: Example message
-          status: "200"
         participants:
         - id: 12345678A
           title: Asociación inventada 1
@@ -131,6 +182,24 @@ components:
         - id: 12345678A
           title: Asociación inventada 1
           email: asociacion@gmail.com
+    TypeSessionResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/Response200'
+        types:
+          type: array
+          items:
+            $ref: '#/components/schemas/TypeSession'
+      example:
+        types:
+        - type_normalized: Eliminatoria
+          id: 1
+        - type_normalized: Eliminatoria
+          id: 1
+        status:
+          code: "200"
+          message: Example message
     SessionsResponse:
       type: object
       properties:
@@ -165,8 +234,8 @@ components:
             title: Asociación inventada 1
             email: asociacion@gmail.com
         status:
+          code: "200"
           message: Example message
-          status: "200"
     SessionResponse:
       type: object
       properties:
@@ -188,8 +257,20 @@ components:
             title: Asociación inventada 1
             email: asociacion@gmail.com
         status:
+          code: "200"
           message: Example message
-          status: "200"
+    TypeSession:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        type_normalized:
+          type: string
+          example: Eliminatoria
+      example:
+        type_normalized: Eliminatoria
+        id: 1
     Session:
       type: object
       properties:
@@ -268,5 +349,5 @@ components:
           $ref: '#/components/schemas/Response200'
       example:
         status:
+          code: "200"
           message: Example message
-          status: "200"

@@ -18,3 +18,25 @@ exports.getAllAsociaciones = function() {
   });
 }
 
+/**
+ * Crea una asociación
+ *
+ * body Asociacion  (optional)
+ * returns inline_response_200
+ **/
+exports.createAsociacion = function(body) {
+  return new Promise(function(resolve, reject) {
+    var examples = {};
+    examples['application/json'] = {
+  "status" : {
+    "code" : "200",
+    "message" : "Example message"
+  }
+};
+    if (Object.keys(examples).length > 0) {
+      resolve(examples[Object.keys(examples)[0]]);
+    } else {
+      resolve();
+    }
+  });
+}

@@ -43,3 +43,26 @@ exports.getSession = function(idSession) {
     }
   })
 }
+
+/**
+ * Crea una sesión
+ *
+ * body Session  (optional)
+ * returns inline_response_200
+ **/
+exports.createSesion = function(body) {
+  return new Promise(function(resolve, reject) {
+    var examples = {};
+    examples['application/json'] = {
+  "status" : {
+    "code" : "200",
+    "message" : "Example message"
+  }
+};
+    if (Object.keys(examples).length > 0) {
+      resolve(examples[Object.keys(examples)[0]]);
+    } else {
+      resolve();
+    }
+  });
+}
