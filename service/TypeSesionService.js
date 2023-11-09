@@ -1,5 +1,5 @@
 'use strict';
-
+var extraService = require("../service/ExtraService");
 
 /**
  * Devuelve todas las sesiones con su información.
@@ -8,25 +8,11 @@
  **/
 exports.getAllTypeSesion = function() {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "types" : [ {
-    "type_normalized" : "Eliminatoria",
-    "id" : 1
-  }, {
-    "type_normalized" : "Eliminatoria",
-    "id" : 1
-  } ],
-  "status" : {
-    "code" : "200",
-    "message" : "Example message"
-  }
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+    extraService.get(null, 'type_session').then(res => {
+      resolve(extraService.transformResponse(res, 'types'));
+    }).catch(res => {
+      reject(extraService.transformResponse(res, null, false));
+    })
   });
 }
 
