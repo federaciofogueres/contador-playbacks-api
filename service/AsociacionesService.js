@@ -25,18 +25,11 @@ exports.getAllAsociaciones = function() {
  * returns inline_response_200
  **/
 exports.createAsociacion = function(body) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "status" : {
-    "code" : "200",
-    "message" : "Example message"
-  }
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
+  return new Promise(function (resolve, reject){
+    extraService.set(body, 'asociacion').then(res => {
+      resolve(extraService.transformResponse(res, null, true));
+    }).catch(res => {
+      reject(extraService.transformResponse(res, null, false));
+    })
+  })
 }
