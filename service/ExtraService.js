@@ -52,7 +52,7 @@ var get = exports.get = async function(codigo, table, sqlExpression = null) {
             }
             if (!sql.includes('null')) {
                 if (codigo !== null && table === 'asociacion_session') {
-                    sql += ` WHERE id_session = ${codigo};`
+                    sql += ` WHERE id_session = '${codigo}';`
                 } else if (codigo !== null) {
                     sql += ` WHERE id = '${codigo}';`
                 }

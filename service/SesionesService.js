@@ -136,18 +136,20 @@ var updateRelation = async function(body, idSession) {
       newAsociacionesOnSession.push(asociacion.id)
     })
     let oldAsociacionesOnSession =  [];
-    (await extraService.get(idSession, 'asociacion_session')).map(relation => {
-      oldAsociacionesOnSession.push(relation.id_asociacion)
-    })
-
+    let asociaciones = await extraService.get(idSession, 'asociacion_session');
+    if (asociaciones !== 0) {
+      asociaciones.map(relation => {
+        oldAsociacionesOnSession.push(relation.id_asociacion)
+      })
+    }
     let asocToRemove = oldAsociacionesOnSession.filter(item => !newAsociacionesOnSession.includes(item));
     let asocToAdd = newAsociacionesOnSession.filter(item => !oldAsociacionesOnSession.includes(item));
   
-    /*console.log('newAsociacionesOnSession -> ', newAsociacionesOnSession)
+    console.log('newAsociacionesOnSession -> ', newAsociacionesOnSession)
     console.log('oldAsociacionesOnSession -> ', oldAsociacionesOnSession)
   
     console.log('asocToRemove -> ', asocToRemove)
-    console.log('asocToAdd -> ', asocToAdd)*/
+    console.log('asocToAdd -> ', asocToAdd)
 
     if (asocToRemove.length > 0) {
       for (let asociacion of asocToRemove) {
