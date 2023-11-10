@@ -131,14 +131,13 @@ var deleteFromBD = exports.delete = async function (codigo, table, softDelete = 
             if (softDelete) {
                 sql = await softDeleteItem(codigo, table);
             } else if (table === 'asociacion_session') {
-                sql = `DELETE FROM ${connectionBD.DB}.${table} WHERE id_session = '${codigo}';`
+                sql = `DELETE FROM ${connectionBD.DB}.${table} WHERE id_session = '${codigo}' OR id_asociacion = '${codigo}';`
             } else {
                 sql = await processSQLDeleteRequest(codigo, table);
             }
             connection.query(sql, function (err, rows, fields) {
                 console.log('DELETE SQL: ', sql);
                 if (sql.includes("DELETE")) {
-                    console.log('Error -> ', err)
                     if (err) reject('Error al realizar el borrado. Error: ' + err);
                     if (rows.affectedRows > 0) {
                         connectionBD.closeConnect(connection);
@@ -189,11 +188,12 @@ var update = exports.update = function (updateObject, table, idUpdateObject) {
             console.log('UPDATE SQL: ', sql);
             connection.query(sql, function (err, rows, fields) {
                 if (err) reject('Error al actualizar el registro. Error: ' + err);
+                connectionBD.closeConnect(connection);
                 if (rows && rows.changedRows >= 1) {
-                    connectionBD.closeConnect(connection);
                     resolve(updateObject);
+                } else if (rows && rows.changedRows === 0 && rows.affectedRows > 0) {
+                    resolve({status: true, message: 'No cambió nada.'})
                 } else {
-                    connectionBD.closeConnect(connection);
                     reject('No se pudo actualizar el registro.');
                 }
             });

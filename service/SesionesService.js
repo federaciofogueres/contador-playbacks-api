@@ -43,6 +43,21 @@ exports.getSession = function(idSession) {
   })
 }
 
+var createRelation = async function(id_asociacion, id_session) {
+  return new Promise(async function(resolve, reject) {
+    try {
+      let postRelation =  {
+        id_asociacion: id_asociacion,
+        id_session: id_session
+      }
+      await extraService.set(postRelation, 'asociacion_session');
+      resolve(true);
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
+
 /**
  * Crea una sesión
  *
@@ -59,11 +74,7 @@ exports.createSesion = function(body) {
     try {
       await extraService.set(postSession, 'session'); // Returns 1 if OK
       for(let asociacion of body.participants) {
-        let postRelation =  {
-          id_asociacion: asociacion.id,
-          id_session: body.id
-        }
-        await extraService.set(postRelation, 'asociacion_session'); // Returns 1 if OK
+        createRelation(asociacion.id, body.id);
       }
       resolve(extraService.transformResponse(null, null, true));
     } catch(error) {
@@ -103,20 +114,65 @@ exports.deleteSesion = function(idSession) {
  * idSession String 
  * returns inline_response_200_1
  **/
-exports.putSesion = function(body,idSession) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "response" : {
-    "code" : "200",
-    "message" : "Example message"
-  }
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
+exports.putSesion = function(body, idSession) {
+  return new Promise(async function(resolve, reject) {
+    try {
+      await updateRelation(body, idSession);
+      delete body.type_normalized;
+      delete body.participants;
+      await extraService.update(body, 'session', idSession);
+      reject(extraService.transformResponse(null, null, true));
+    } catch(error) {
+      reject(extraService.transformResponse(error, null, false));
     }
   });
+}
+
+var updateRelation = async function(body, idSession) {
+  return new Promise(async function(resolve,reject) {
+
+    let newAsociacionesOnSession = [];
+    body.participants.map(asociacion => {
+      newAsociacionesOnSession.push(asociacion.id)
+    })
+    let oldAsociacionesOnSession =  [];
+    (await extraService.get(idSession, 'asociacion_session')).map(relation => {
+      oldAsociacionesOnSession.push(relation.id_asociacion)
+    })
+
+    let asocToRemove = oldAsociacionesOnSession.filter(item => !newAsociacionesOnSession.includes(item));
+    let asocToAdd = newAsociacionesOnSession.filter(item => !oldAsociacionesOnSession.includes(item));
+  
+    /*console.log('newAsociacionesOnSession -> ', newAsociacionesOnSession)
+    console.log('oldAsociacionesOnSession -> ', oldAsociacionesOnSession)
+  
+    console.log('asocToRemove -> ', asocToRemove)
+    console.log('asocToAdd -> ', asocToAdd)*/
+
+    if (asocToRemove.length > 0) {
+      for (let asociacion of asocToRemove) {
+        try{
+          //console.log('Borrando asociación -> ', asociacion)
+          await extraService.delete(asociacion, 'asociacion_session');
+        } catch(error) {
+          reject(error);
+        }
+      }
+    }  
+    if (asocToAdd.length > 0) {
+      for (let asociacion of asocToAdd) {
+        console.log('asocToAdd -> ', asociacion);
+        try{
+          await createRelation(asociacion, idSession);
+        } catch(error) {
+          reject(error);
+        }
+      }
+    }
+
+    resolve(true);
+
+  });
+
 }
 
