@@ -10,8 +10,7 @@ exports.getAllAsociaciones = function() {
   console.log('holña')
   return new Promise(function(resolve, reject) {
     extraService.get(null, 'asociacion').then(res => {
-      console.log(res);
-      resolve(extraService.transformResponse(res, 'participants'));
+      resolve(extraService.transformResponse(res.filter(a => a.active === 1), 'participants'));
     }).catch(res => {
       reject(extraService.transformResponse(res, null, false));
     })
@@ -42,20 +41,13 @@ exports.createAsociacion = function(body) {
  * returns inline_response_200_1
  **/
 exports.deleteAsociacion = function(idAsociacion) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "response" : {
-    "code" : "200",
-    "message" : "Example message"
-  }
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
+  return new Promise(function (resolve, reject){
+    extraService.delete(idAsociacion, 'asociacion', true).then(res => {
+      resolve(extraService.transformResponse(res, null, true));
+    }).catch(res => {
+      reject(extraService.transformResponse(res, null, false));
+    })
+  })
 }
 
 /**
