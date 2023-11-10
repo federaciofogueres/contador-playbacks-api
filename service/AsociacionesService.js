@@ -7,7 +7,6 @@ var extraService = require("../service/ExtraService");
  * returns AsociacionesResponse
  **/
 exports.getAllAsociaciones = function() {
-  console.log('holña')
   return new Promise(function(resolve, reject) {
     extraService.get(null, 'asociacion').then(res => {
       resolve(extraService.transformResponse(res.filter(a => a.active === 1), 'participants'));
