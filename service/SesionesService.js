@@ -72,3 +72,52 @@ exports.createSesion = function(body) {
     }
   })
 }
+
+
+/**
+ * Borra los datos de la sesión pasada por parámetro.
+ *
+ * idSession String 
+ * returns inline_response_200_1
+ **/
+exports.deleteSesion = function(idSession) {
+  return new Promise(function(resolve, reject) {
+    var examples = {};
+    examples['application/json'] = {
+  "response" : {
+    "code" : "200",
+    "message" : "Example message"
+  }
+};
+    if (Object.keys(examples).length > 0) {
+      resolve(examples[Object.keys(examples)[0]]);
+    } else {
+      resolve();
+    }
+  });
+}
+
+/**
+ * Actualizar una sesión
+ *
+ * body Session Item to add (optional)
+ * idSession String 
+ * returns inline_response_200_1
+ **/
+exports.putSesion = function(body,idSession) {
+  return new Promise(function(resolve, reject) {
+    var examples = {};
+    examples['application/json'] = {
+  "response" : {
+    "code" : "200",
+    "message" : "Example message"
+  }
+};
+    if (Object.keys(examples).length > 0) {
+      resolve(examples[Object.keys(examples)[0]]);
+    } else {
+      resolve();
+    }
+  });
+}
+

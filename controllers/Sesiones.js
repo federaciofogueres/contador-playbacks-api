@@ -13,6 +13,16 @@ module.exports.createSesion = function createSesion (req, res, next, body) {
     });
 };
 
+module.exports.deleteSesion = function deleteSesion (req, res, next, idSession) {
+  Sesiones.deleteSesion(idSession)
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};
+
 module.exports.getAllSessions = function getAllSessions (req, res, next) {
   Sesiones.getAllSessions()
     .then(function (response) {
@@ -25,6 +35,16 @@ module.exports.getAllSessions = function getAllSessions (req, res, next) {
 
 module.exports.getSession = function getSession (req, res, next, idSession) {
   Sesiones.getSession(idSession)
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};
+
+module.exports.putSesion = function putSesion (req, res, next, body, idSession) {
+  Sesiones.putSesion(body, idSession)
     .then(function (response) {
       utils.writeJson(res, response);
     })

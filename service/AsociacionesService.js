@@ -33,3 +33,80 @@ exports.createAsociacion = function(body) {
     })
   })
 }
+
+
+/**
+ * Borra los datos de la asociación pasada por parámetro.
+ *
+ * idAsociacion String 
+ * returns inline_response_200_1
+ **/
+exports.deleteAsociacion = function(idAsociacion) {
+  return new Promise(function(resolve, reject) {
+    var examples = {};
+    examples['application/json'] = {
+  "response" : {
+    "code" : "200",
+    "message" : "Example message"
+  }
+};
+    if (Object.keys(examples).length > 0) {
+      resolve(examples[Object.keys(examples)[0]]);
+    } else {
+      resolve();
+    }
+  });
+}
+
+/**
+ * Devuelve todos los datos de la asociación consultada
+ *
+ * idAsociacion String 
+ * returns AsociacionResponse
+ **/
+exports.getAsociacion = function(idAsociacion) {
+  return new Promise(function(resolve, reject) {
+    var examples = {};
+    examples['application/json'] = {
+  "session" : {
+    "id" : "12345678A",
+    "title" : "Asociación inventada 1",
+    "email" : "asociacion@gmail.com"
+  },
+  "status" : {
+    "code" : "200",
+    "message" : "Example message"
+  }
+};
+    if (Object.keys(examples).length > 0) {
+      resolve(examples[Object.keys(examples)[0]]);
+    } else {
+      resolve();
+    }
+  });
+}
+
+
+/**
+ * Actualizar una asociación
+ *
+ * body Asociacion Item to add (optional)
+ * idAsociacion String 
+ * returns inline_response_200_1
+ **/
+exports.putAsociacion = function(body,idAsociacion) {
+  return new Promise(function(resolve, reject) {
+    var examples = {};
+    examples['application/json'] = {
+  "response" : {
+    "code" : "200",
+    "message" : "Example message"
+  }
+};
+    if (Object.keys(examples).length > 0) {
+      resolve(examples[Object.keys(examples)[0]]);
+    } else {
+      resolve();
+    }
+  });
+}

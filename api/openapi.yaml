@@ -75,6 +75,58 @@ paths:
               schema:
                 $ref: '#/components/schemas/SessionResponse'
       x-swagger-router-controller: Sesiones
+    put:
+      tags:
+      - Sesiones
+      description: Actualizar una sesión
+      operationId: putSesion
+      parameters:
+      - name: idSession
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: Item to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Session'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+        "201":
+          description: Asociacion actualizada
+        "400":
+          description: "invalid input, object invalid"
+      x-swagger-router-controller: Sesiones
+    delete:
+      tags:
+      - Sesiones
+      description: Borra los datos de la sesión pasada por parámetro.
+      operationId: deleteSesion
+      parameters:
+      - name: idSession
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+      x-swagger-router-controller: Sesiones
   /asociaciones:
     get:
       tags:
@@ -106,6 +158,80 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_200'
+      x-swagger-router-controller: Asociaciones
+  /asociaciones/{idAsociacion}:
+    get:
+      tags:
+      - Asociaciones
+      description: Devuelve todos los datos de la asociación consultada
+      operationId: getAsociacion
+      parameters:
+      - name: idAsociacion
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsociacionResponse'
+      x-swagger-router-controller: Asociaciones
+    put:
+      tags:
+      - Asociaciones
+      description: Actualizar una asociación
+      operationId: putAsociacion
+      parameters:
+      - name: idAsociacion
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: Item to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Asociacion'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+        "201":
+          description: Asociacion actualizada
+        "400":
+          description: "invalid input, object invalid"
+      x-swagger-router-controller: Asociaciones
+    delete:
+      tags:
+      - Asociaciones
+      description: Borra los datos de la asociación pasada por parámetro.
+      operationId: deleteAsociacion
+      parameters:
+      - name: idAsociacion
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
       x-swagger-router-controller: Asociaciones
   /typeSesion:
     get:
@@ -259,6 +385,21 @@ components:
         status:
           code: "200"
           message: Example message
+    AsociacionResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/Response200'
+        session:
+          $ref: '#/components/schemas/Asociacion'
+      example:
+        session:
+          id: 12345678A
+          title: Asociación inventada 1
+          email: asociacion@gmail.com
+        status:
+          code: "200"
+          message: Example message
     TypeSession:
       type: object
       properties:
@@ -349,5 +490,14 @@ components:
           $ref: '#/components/schemas/Response200'
       example:
         status:
+          code: "200"
+          message: Example message
+    inline_response_200_1:
+      type: object
+      properties:
+        response:
+          $ref: '#/components/schemas/Response200'
+      example:
+        response:
           code: "200"
           message: Example message
