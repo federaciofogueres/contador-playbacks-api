@@ -59,11 +59,10 @@ var get = exports.get = async function(codigo, table, sqlExpression = null) {
                 console.log('GET SQL ---> ', sql);
                 connection.query(sql, async function (err, rows, fields) {
                     if (err) reject('Error al realizar la consulta: ' + err);
+                    connectionBD.closeConnect(connection);
                     if (rows.length == 0) {
-                        connectionBD.closeConnect(connection);
-                        reject('No hay datos para la consulta realizada.');
+                        resolve(rows.length);
                     } else {
-                        connectionBD.closeConnect(connection);
                         resolve(await processSQLResponse(rows));
                     }
                 });
@@ -131,14 +130,15 @@ var deleteFromBD = exports.delete = async function (codigo, table, softDelete = 
             var sql = '';
             if (softDelete) {
                 sql = await softDeleteItem(codigo, table);
-            } else if (table === 'voto' || table === 'SimulacionCandidatura') {
-                sql = `DELETE FROM ${connectionBD.DB}.${table} WHERE (idSimulacion = ${codigo});`
+            } else if (table === 'asociacion_session') {
+                sql = `DELETE FROM ${connectionBD.DB}.${table} WHERE id_session = '${codigo}';`
             } else {
                 sql = await processSQLDeleteRequest(codigo, table);
             }
             connection.query(sql, function (err, rows, fields) {
                 console.log('DELETE SQL: ', sql);
                 if (sql.includes("DELETE")) {
+                    console.log('Error -> ', err)
                     if (err) reject('Error al realizar el borrado. Error: ' + err);
                     if (rows.affectedRows > 0) {
                         connectionBD.closeConnect(connection);

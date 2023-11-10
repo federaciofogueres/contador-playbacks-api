@@ -9,7 +9,6 @@ var extraService = require("../service/ExtraService");
 exports.getAllSessions = function() {
   return new Promise(function(resolve, reject) {
     extraService.get(null, 'session').then(res => {
-      console.log(res);
       resolve(extraService.transformResponse(res, 'sessions'));
     }).catch(res => {
       reject(extraService.transformResponse(res, null, false));
@@ -73,6 +72,9 @@ exports.createSesion = function(body) {
   })
 }
 
+var removeRelations = function() {
+
+}
 
 /**
  * Borra los datos de la sesión pasada por parámetro.
@@ -81,20 +83,17 @@ exports.createSesion = function(body) {
  * returns inline_response_200_1
  **/
 exports.deleteSesion = function(idSession) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "response" : {
-    "code" : "200",
-    "message" : "Example message"
-  }
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
+  return new Promise(async function (resolve, reject){
+    try {
+      if (await extraService.get(idSession, 'asociacion_session') !== 0) {
+        await extraService.delete(idSession, 'asociacion_session');
+      }
+      await extraService.delete(idSession, 'session')
+      resolve(extraService.transformResponse(null, null, true));
+    } catch(error) {
+      reject(extraService.transformResponse(error, null, false));
     }
-  });
+  })
 }
 
 /**
