@@ -113,3 +113,53 @@ var set = exports.set = async function(insertObject, table, returnId = false) {
         }
     })
 }
+
+var softDeleteItem = exports.softDeleteItem = async function (codigo, table) {
+    return `UPDATE ${connectionBD.DB}.${table} SET active = 0 WHERE id = '${codigo}';`;
+}
+
+var processSQLDeleteRequest = exports.processSQLDeleteRequest = async function (codigo, table) {
+    return `DELETE FROM ${connectionBD.DB}.${table} WHERE id = '${codigo}';`;
+}
+
+
+var deleteFromBD = exports.delete = async function (codigo, table, softDelete = false) {
+    return new Promise(async function (resolve, reject) {
+        console.log(codigo, table);
+        var connection = connectionBD.connect();
+        if (connection) {
+            var sql = '';
+            if (softDelete) {
+                sql = await softDeleteItem(codigo, table);
+            } else if (table === 'voto' || table === 'SimulacionCandidatura') {
+                sql = `DELETE FROM ${connectionBD.DB}.${table} WHERE (idSimulacion = ${codigo});`
+            } else {
+                sql = await processSQLDeleteRequest(codigo, table);
+            }
+            connection.query(sql, function (err, rows, fields) {
+                console.log('DELETE SQL: ', sql);
+                if (sql.includes("DELETE")) {
+                    if (err) reject('Error al realizar el borrado. Error: ' + err);
+                    if (rows.affectedRows > 0) {
+                        connectionBD.closeConnect(connection);
+                        resolve(rows.affectedRows);
+                    } else {
+                        connectionBD.closeConnect(connection);
+                        reject('Error al realizar el borrado.');
+                    }
+                } else {
+                    if (err) reject('Error al actualizar el registro. Error: ' + err);
+                    if (rows && rows.changedRows >= 1) {
+                        connectionBD.closeConnect(connection);
+                        resolve("OK");
+                    } else {
+                        connectionBD.closeConnect(connection);
+                        reject('No se pudo actualizar el registro.');
+                    }
+                }
+            });
+        } else {
+            reject('Error al abrir conexión con la BD.');
+        }
+    })
+}
