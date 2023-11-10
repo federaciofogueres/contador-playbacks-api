@@ -163,3 +163,42 @@ var deleteFromBD = exports.delete = async function (codigo, table, softDelete = 
         }
     })
 }
+
+var processSQLPutRequest = async function(updateObject, idUpdateObject) {
+    var sql = '';
+    await Object.keys(updateObject).forEach(key => {
+        sql += `${key}='${updateObject[key]}', `
+    })
+    sql = sql.slice(0,-2);
+    sql += ` WHERE id = '${idUpdateObject}';`;
+    return sql;
+}
+
+var update = exports.update = function (updateObject, table, idUpdateObject) {
+    return new Promise(async function (resolve, reject) {
+        var connection = connectionBD.connect();
+        if (connection) {
+            var sql = '';
+            if (table === 'voto' || table === 'SimulacionCandidatura') {
+                sql = `UPDATE ${connectionBD.DB}.${table} SET votos=${updateObject.votos} WHERE (idSimulacion=${idUpdateObject} AND idCandidatura=${updateObject.idCandidatura});`;
+            } else if(table === 'usuarios') {
+                sql = `UPDATE ${connectionBD.DB}.${table} SET password='${updateObject.password}' WHERE (dni = '${idUpdateObject}');`;
+            } else {
+                sql = `UPDATE ${connectionBD.DB}.${table} SET ` + await processSQLPutRequest(updateObject, idUpdateObject);
+            }
+            console.log('UPDATE SQL: ', sql);
+            connection.query(sql, function (err, rows, fields) {
+                if (err) reject('Error al actualizar el registro. Error: ' + err);
+                if (rows && rows.changedRows >= 1) {
+                    connectionBD.closeConnect(connection);
+                    resolve(updateObject);
+                } else {
+                    connectionBD.closeConnect(connection);
+                    reject('No se pudo actualizar el registro.');
+                }
+            });
+        } else {
+          reject('Error al abrir conexión con la BD.');
+        }
+    });
+  };
