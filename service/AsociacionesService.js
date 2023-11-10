@@ -87,17 +87,10 @@ exports.getAsociacion = function(idAsociacion) {
  **/
 exports.putAsociacion = function(body,idAsociacion) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "response" : {
-    "code" : "200",
-    "message" : "Example message"
-  }
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+    extraService.update(body, 'asociacion', idAsociacion).then(res => {
+      resolve(extraService.transformResponse(res, null, true));
+    }).catch(res => {
+      reject(extraService.transformResponse(res, null, false));
+    })
   });
 }
