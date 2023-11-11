@@ -31,9 +31,11 @@ exports.getSession = function(idSession) {
       let type = await extraService.get(session[0].type, 'type_session');
       let response = session[0];
       response['participants'] = [];
-      for(let asociacion of asociaciones) {
-        let asociacionesInfo = await extraService.get(asociacion.id_asociacion, 'asociacion');
-        response.participants.push(asociacionesInfo[0]);
+      if (asociaciones !== 0) {
+        for(let asociacion of asociaciones) {
+          let asociacionesInfo = await extraService.get(asociacion.id_asociacion, 'asociacion');
+          response.participants.push(asociacionesInfo[0]);
+        }
       }
       response['type_normalized'] = type[0].type_normalized;
       resolve(extraService.transformResponse(response, 'session'));
