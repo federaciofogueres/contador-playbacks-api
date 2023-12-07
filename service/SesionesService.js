@@ -9,7 +9,7 @@ var extraService = require("../service/ExtraService");
 exports.getAllSessions = function() {
   return new Promise(function(resolve, reject) {
     extraService.get(null, 'session').then(res => {
-      resolve(extraService.transformResponse(res, 'sessions'));
+      resolve(extraService.transformResponse(res.filter(r => r.active === 1), 'sessions'));
     }).catch(res => {
       reject(extraService.transformResponse(res, null, false));
     })
