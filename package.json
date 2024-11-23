@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "prestart": "npm install",
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [
     "swagger"
@@ -17,6 +18,7 @@
     "cors": "^2.8.5",
     "js-yaml": "^3.3.0",
     "nodemailer": "^6.9.7",
+    "nodemon": "^3.1.7",
     "oas3-tools": "^2.2.3"
   },
   "devDependencies": {
