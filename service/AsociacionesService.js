@@ -57,23 +57,11 @@ exports.deleteAsociacion = function(idAsociacion) {
  **/
 exports.getAsociacion = function(idAsociacion) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "session" : {
-    "id" : "12345678A",
-    "title" : "Asociación inventada 1",
-    "email" : "asociacion@gmail.com"
-  },
-  "status" : {
-    "code" : "200",
-    "message" : "Example message"
-  }
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+    extraService.get(idAsociacion, 'asociacion').then(res => {
+      resolve(extraService.transformResponse(res, 'asociaciones'));
+    }).catch(res => {
+      reject(extraService.transformResponse(res, null, false));
+    });
   });
 }
 
