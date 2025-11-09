@@ -29,7 +29,7 @@ module.exports = (formulario) => {
       subject: formulario.asunto,
       html: formulario.contenido,
       attachments: [{
-        filename: 'test.png',
+        filename: formulario.email + '.png',
         content: Buffer.from(formulario.sign.split(',')[1], 'base64'),
         encoding: 'base64'
       }]
