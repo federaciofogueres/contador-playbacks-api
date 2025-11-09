@@ -4,7 +4,6 @@
   "description": "API para la app contador-playbacks",
   "main": "index.js",
   "scripts": {
-    "prestart": "npm install",
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
@@ -18,10 +17,10 @@
     "cors": "^2.8.5",
     "js-yaml": "^3.3.0",
     "nodemailer": "^6.9.7",
-    "nodemon": "^3.1.7",
-    "oas3-tools": "^2.2.3"
+    "oas3-tools": "^2.2.3",
+    "mysql": "^2.18.1"
   },
   "devDependencies": {
-    "mysql": "^2.18.1"
+    "nodemon": "^3.1.7"
   }
 }
